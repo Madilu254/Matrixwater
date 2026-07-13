@@ -1,0 +1,54 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
+  --font-display: "Space Grotesk", var(--font-sans);
+  
+  --color-ink: #0c3d5c;
+  --color-paper: #fff;
+  --color-slate-600: #4e7796;
+}
+
+@layer base {
+  body {
+    background-color: var(--color-paper);
+    font-family: var(--font-sans);
+    line-height: var(--leading-relaxed);
+    color: var(--color-ink);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  h1, h2, h3, h4 {
+    font-family: var(--font-display);
+    font-weight: var(--font-weight-bold);
+    letter-spacing: var(--tracking-tight);
+    color: var(--color-ink);
+  }
+}
+
+/* Infinite Brand Marquee Animation loops */
+@keyframes marquee {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+.animate-marquee {
+  width: max-content;
+  animation: marquee 30s linear infinite;
+  display: flex;
+}
+
+.animate-marquee-hover-pause:hover .animate-marquee {
+  animation-play-state: paused;
+}
+/* Custom smooth scaling rules for full-width split presentation columns */
+.hover\:scale-102:hover {
+  transform: scale(1.02);
+}
+
+@media (min-width: 1024px) {
+  #engineered-systems .max-w-7xl {
+    max-width: 80rem;
+  }
+}
