@@ -620,7 +620,7 @@ export default function App() {
         </div>
       </section>
 
-      {/* --- FOOTER SPEC LAYERS PRESERVING THE COVER WATER BACKGROUND --- */}
+      {/*FOOTER SPEC LAYERS PRESERVING THE COVER WATER BACKGROUND*/}
       <footer 
         ref={contactInfoRef}
         className="text-white py-14 border-t border-[#38BDF8]/30 relative overflow-hidden bg-cover bg-center shadow-md"
