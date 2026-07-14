@@ -2,33 +2,45 @@ import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ArrowRight, ChevronLeft, ChevronRight, CheckCircle, Clock, Mail, MapPin, Phone, X, ArrowLeft } from 'lucide-react';
 
-// Import the background asset directly so Vite bundles and resolves the path correctly
+// Core UI Background Assets
 import blueBg from './Blue.jpg';
+import backgrnd from './backgrnd.png';
+import webimg from './webimg.png'; // Imported the requested blue tint background layout image
 
-// --- DATA STRUCTURES ---
+// Explicit Local Workshop Inventory Image Asset Injections
+import img1 from './assets/img1.jpeg';
+import img2 from './assets/img2.jpeg';
+import img3 from './assets/img3.jpeg';
+import img4 from './assets/img4.jpeg';
+import img5 from './assets/img5.jpeg';
+import img6 from './assets/img6.jpeg';
+import img7 from './assets/img7.jpeg';
+import img8 from './assets/img8.jpeg';
+import img9 from './assets/img9.jpeg';
+import img10 from './assets/img10.jpeg';
+
 const HERO_SLIDES = [
   { id: "M-01", title: "Advanced Water Treatment", tagline: "MUNICIPAL & DOMESTIC PURIFICATION", description: "We construct commercial Reverse Osmosis plants, automatic water softening units, and de-mineralizer systems engineered for pure, calcification-free water in homes, farms, and industries.", image: "https://images.unsplash.com/photo-1585338107529-13afc5f02586?q=80&w=1600&auto=format&fit=crop" },
   { id: "M-02", title: "Integrated Borehole Solarisation", tagline: "OFF-GRID CLEAN ENERGETIC PUMPING", description: "Convert standard electric submersibles to sustainable, high-efficiency solar pumps powered by solar-tracker arrays with dry-run sensor protection.", image: "https://images.unsplash.com/photo-1509391366360-2e959784a276?q=80&w=1600&auto=format&fit=crop" },
-  { id: "M-03", title: "High-Yield Precision Irrigation Systems", tagline: "DURABLE CROP ALLOCATION NETWORKS", description: "Precision HDPE distribution layouts, chemical dosing manifolds, and drip lines designed to maximize agricultural crop yield with minimal water wastage.", image: "https://images.unsplash.com/photo-1622383563227-04401ab4e5ea?q=80&w=1600&auto=format&fit=crop" },
-  { id: "M-04", title: "Borehole Equipping & Civil Works", tagline: "COMPLETE WELL INFRASTRUCTURE", description: "Physical well casing, high-head pumping tests, mechanical water storage steel towers, and regulatory WRMA license certification handovers.", image: "https://images.unsplash.com/photo-1541888946425-d81bb19240f5?q=80&w=1600&auto=format&fit=crop" },
-  { id: "M-05", title: "Industrial Process Water Architecture", tagline: "COMMERCIAL INFRASTRUCTURE & BOILERS", description: "Custom sand filtration, active media fluoride beds, and automated membrane desalination facilities designed strictly around physical water samples.", image: "https://images.unsplash.com/photo-1617155093730-a8bf47be792d?q=80&w=1600&auto=format&fit=crop" }
+  { id: "M-03", title: "High-Yield Precision Irrigation Systems", tagline: "DURABLE CROP ALLOCATION NETWORKS", description: "Precision HDPE distribution layouts, chemical dosing manifolds, and drip lines designed to maximize agricultural crop yield with minimal water wastage.", image: "https://images.unsplash.com/photo-1622383563227-04401ab4e5ea?q=80&w=1600&auto=format&fit=crop" }
 ];
 
 const TURNKEY_SYSTEMS = [
-  { name: "Reverse Osmosis Plant (Industrial & Commercial)", category: "Water Treatment", image: "https://images.unsplash.com/photo-1581092160607-ee22621dd758?q=80&w=800&auto=format&fit=crop", shortDesc: "Multi-stage, membrane-based high-rejection filtration plants custom designed for homes, farms, and industrial boilers. Effectively removes 99% of total dissolved solids (TDS), fluoride, heavy metals, and high salinity.", detailedDesc: "Our commercial and industrial Reverse Osmosis (RO) plants are engineered specifically to tackle high fluoride, calcium scaling, and extreme mineral salinity typical of East African aquifers. Designed as a modular skid pre-assembled in our workshop, the system includes sand filtration beds, dynamic activated carbon absorption, dual water-softening heads, and high-pressure RO membrane hulls. Perfect for housing estates, hospitals, farms, beverage industries, and commercial water bottling setups.", specifications: ["Capacity range: 500 L/h, 1,000 L/h, up to 100,000 L/h systems", "98.7% rejection rate on TDS, fluoride, heavy metals & sodiums", "Automated PLC computerized controllers with feed pressure meters", "Constructed in food-grade SS304/SS316 stainless steel frame skids"] },
-  { name: "Industrial & Home Water Softening Unit", category: "Water Treatment", image: "https://images.unsplash.com/photo-1584438784894-089d6a128f3e?q=80&w=800&auto=format&fit=crop", shortDesc: "Premium ion-exchange softener units targeting calcium and magnesium calcification in hard-water areas. Prevents scaling in appliances, residential piping, cooling towers, and agricultural irrigation pipes.", detailedDesc: "Hard water causes severe limescale accumulation that ruins industrial boiler heating rods, home water heaters, and farm drip emitters. Our premium Water Softeners run on food-grade cation ion exchange resins that chemically swap calcium and magnesium hardness ions with safe sodium ions. Controlled by automatic volumetric or time-based heads, the system performs intelligent salt brine draw-and-backwash rinse cycles automatically to ensure zero maintenance stress.", specifications: ["Super-capacity food-grade cation exchange resin media", "Runxin digital automated control valves with volumetric meters", "Corrosion-proof, seamless FRP composite holding vessels", "Designed for family homes, hospitality, farms, and boiler-feeds"] },
+  { name: "Reverse Osmosis Plant (Industrial & Commercial)", category: "Water Treatment", image: img7, shortDesc: "Multi-stage, membrane-based high-rejection filtration plants custom designed for homes, farms, and industrial boilers. Effectively removes 99% of total dissolved solids (TDS), fluoride, heavy metals, and high salinity.", detailedDesc: "Our commercial and industrial Reverse Osmosis (RO) plants are engineered specifically to tackle high fluoride, calcium scaling, and extreme mineral salinity typical of East African aquifers. Designed as a modular skid pre-assembled in our workshop, the system includes sand filtration beds, dynamic activated carbon absorption, dual water-softening heads, and high-pressure RO membrane hulls. Perfect for housing estates, hospitals, farms, beverage industries, and commercial water bottling setups.", specifications: ["Capacity range: 500 L/h, 1,000 L/h, up to 100,000 L/h systems", "98.7% rejection rate on TDS, fluoride, heavy metals & sodiums", "Automated PLC computerized controllers with feed pressure meters", "Constructed in food-grade SS304/SS316 stainless steel frame skids"] },
+  { name: "Industrial & Home Water Softening Unit", category: "Water Treatment", image: img3, shortDesc: "Premium ion-exchange softener units targeting calcium and magnesium calcification in hard-water areas. Prevents scaling in appliances, residential piping, cooling towers, and agricultural irrigation pipes.", detailedDesc: "Hard water causes severe limescale accumulation that ruins industrial boiler heating rods, home water heaters, and farm drip emitters. Our premium Water Softeners run on food-grade cation ion exchange resins that chemically swap calcium and magnesium hardness ions with safe sodium ions. Controlled by automatic volumetric or time-based heads, the system performs intelligent salt brine draw-and-backwash rinse cycles automatically to ensure zero maintenance stress.", specifications: ["Super-capacity food-grade cation exchange resin media", "Runxin digital automated control valves with volumetric meters", "Corrosion-proof, seamless FRP composite holding vessels", "Designed for family homes, hospitality, farms, and boiler-feeds"] },
   { name: "High-Efficiency Borehole Solarisation System", category: "Equipping & Solarisation", image: "https://images.unsplash.com/photo-1508514177221-188b1cf16e9d?q=80&w=800&auto=format&fit=crop", shortDesc: "Converting deep wells to 100% off-grid solar-pumping operations. We pair specialized brushless DC solar submersibles with dynamic protective inverters and automatic sun-tracker steel arrays.", detailedDesc: "Ditch the recurring fuel bills and unreliable power grids. Our borehole solarisation packages convert existing or newly drilled wells into fully autonomous solar water stations. We specify high-efficiency brushless DC helical-rotor submersibles, high-discharge solar panels mounted on durable wind-resistant hot-dip galvanized steel frames, and smart controllers with built-in speed variation and dry-run protection sensors.", specifications: ["Configured for head lifts from 30m up to 350 meters deep", "High-discharge delivery rate from 2,000L to 120,000L daily yield", "Intelligent controller with automatic MPPT tracking & grid crossover", "Double-casing dry-run safety sensors to avoid borehole damage"] }
 ];
 
 const HARDWARE_COMPONENTS = [
-  { name: "CNP Vertical Multistage Centrifugal Pumps", category: "Pumping & Boosters", image: "https://images.unsplash.com/photo-1581092335397-9583fe92d232?q=80&w=600&auto=format&fit=crop", shortDesc: "Engineered high-pressure inline booster and multistage pumps crafted in robust SS304/SS316. Ideal for high-head water transport, domestic booster sets, industrial feeds, and farming pipelines.", specifications: ["Working lift head: up to 240 meters maximum lift", "Discharge volume rate: 1.5 m³/h up to 32 m³/h", "Continuous-duty Class F insulation high-temp motor rating", "Laser-welded stainless impellers ensuring high wear resistance"] },
-  { name: "Water Treatment Chemicals & Antiscalants", category: "Chemical Treatment", image: "https://images.unsplash.com/photo-1603126857599-f6e157fa2fe6?q=80&w=600&auto=format&fit=crop", shortDesc: "High-purity chemical treatment solutions including RO membrane anti-scalants, pH stabilizers, chlorine dosing granules, and scale inhibitors for boiler feed water.", specifications: ["Liquid antiscalant formulation compatible with all brand membranes", "NSF/ANSI Standard 60 laboratory certified food safe chemicals", "Fast-acting industrial flocculent powder for sediment coagulation", "Boiler and cooling tower closed-loop chemical block stabilizers"] },
-  { name: "Epoxy-Lined Mild Steel Media Vessels", category: "Media Vessels", image: "https://images.unsplash.com/photo-1532601224476-15c79f2f7a51?q=80&w=600&auto=format&fit=crop", shortDesc: "Heavy-duty steel media pressure vessels designed for high-flow municipal filtration grids, municipal de-ironing, activated carbon absorption, and de-mineralization plants.", specifications: ["Heavy duty construction engineered for operating pressures up to 10 Bar", "Food-grade internal epoxy dynamic lining ensuring anti-corrosion properties", "Compatible with automatic backwash top-mount multi-port valves", "Sized exactly to flow configurations: Sand, Carbon, Birm or Manganese filters"] },
-  { name: "Clean Dosing Pump", category: "Chemical Dosing", image: "https://images.unsplash.com/photo-1581092918056-0c4c3dad3785?q=80&w=600&auto=format&fit=crop", shortDesc: "Seko professional micro-processor controlled electromagnetic dosing pumps designed for accurate chemical liquid injections.", specifications: ["Adjustable stroke rate via digital frequency keypad controllers", "PVDF pump head layout with PTFE diaphragms for chemical stability", "Wall-mount structural configurations with IP65 ingress protection assemblies", "Proportional dosing options using external context pulses or 4-20mA telemetry"] },
-  { name: "Filter Housings", category: "Filtration Systems", image: "https://images.unsplash.com/photo-1585338107529-13afc5f02586?q=80&w=600&auto=format&fit=crop", shortDesc: "Heavy-duty poly-propylene structural cartridge housings for particulate security lines.", specifications: ["Available in standard Slim and Big Blue sizing metrics", "Reinforced pressure reliefs with max tolerances up to 8 Bar pressure profiles", "Thick double O-ring structural seal limits preventing context bypass layouts", "Threaded brass configurations for clean, leak-free pipeline integrations"] },
-  { name: "FRP Media Vessel", category: "Media Vessels", image: "https://images.unsplash.com/photo-1616401784845-180882ba9ba8?q=80&w=600&auto=format&fit=crop", shortDesc: "High-strength composite Fiberglass Reinforced Plastic tanks for pressure filtration layers.", specifications: ["Seamless seamless PE inner shell wrapped in continuous fiber filament loops", "100% rustproof and corrosion resistant configuration boundaries", "Standard thread openings for clean integration with top multi-port control heads", "NSF/ANSI Standard 44 certified for structural safety context boundaries"] },
-  { name: "Water Cartridges", category: "Filtration Systems", image: "https://images.unsplash.com/photo-1584438784894-089d6a128f3e?q=80&w=800&auto=format&fit=crop", shortDesc: "Replacement filter cartridges spanning spun sediment, wound polypropylene, and activated block options.", specifications: ["Nominal retention metrics available from 50 micron down to 0.5 absolute levels", "High dirt holding context structures with minimal differential drop limits", "FDA grade material bounds safe for potable water supply configurations", "Standard 10-inch and 20-inch Big Blue sizing lengths ready for distribution"] },
-  { name: "UV Lamp Assembly", category: "Sterilization Systems", image: "https://images.unsplash.com/photo-1548345680-f5475ea5df84?q=80&w=600&auto=format&fit=crop", shortDesc: "High-intensity quartz-sleeve ultraviolet sterilizers for rapid microbiological disinfection.", specifications: ["99.9% elimination indices of bacteria and viral pathogens within flow streams", "Heavy duty SS304 chambers paired with high-transmittance quartz sleeves", "Audible indicator ballasts managing bulb lifespans dynamically up to 9000 hours", "Chemical-free execution properties preserving raw natural properties safely"] }
+  { name: "Premium Spun Sediment & Carbon Filter Cartridges", category: "Filtration Spares", image: img1, shortDesc: "Replacement filter elements spanning melt-blown spun polypropylene, string-wound sediment, and high-density block activated carbon (GAC-10BB) designed for robust particulate extraction.", specifications: ["Nominal particle retention ratings available from 20 down to 1 micron", "Multi-layer structural design prevents pressure drop compromises", "100% food-grade material bounds safe for pure drinking water supply lines", "Effectively removes chlorine, bad odors, and organic chemical taints"] },
+  { name: "Digital Automated PLC Water System Inverter Controllers", category: "Industrial Automation", image: img2, shortDesc: "Infinity electronic plant control command systems engineered to safely automate deep-well submersible running times, booster pump variations, and backwash routing loops.", specifications: ["Intelligent integrated logic protects against single-phase motor stalls", "Built-in dry-run sensor response cutoff preventing pump block cracking", "Thick protective shrink wrap ensures dust and localized moisture sealing", "Easy-to-use toggle configuration keys mapping real-time operational states"] },
+  { name: "High-Strength Fiberglass Reinforced Plastic (FRP) Tanks", category: "Media Pressure Vessels", image: img3, shortDesc: "Heavy-duty commercial composite structural vessels paired with top-mount automated digital multi-port valving assemblies for multi-media filtration layouts.", specifications: ["Seamless structural PE inner shell wrapped in continuous fiber filaments", "Guaranteed 100% rustproof and corrosion resistant configuration parameters", "Sized specifically for high-capacity Activated Carbon, Sand, or Resin media", "Tested to operate reliably under extreme pressure margins up to 10 Bar"] },
+  { name: "Heavy-Duty Opaque & Transparent Filter Housings", category: "Filtration Systems", image: img4, shortDesc: "High-impact reinforced poly-propylene cartridge housings tailored for pre-treatment lines, available in clear acrylic and structural blue variants.", specifications: ["Dual-metric sizing lines available in standard Slim and Big Blue capacities", "Thick double O-ring structural seal bounds eliminate fluid context bypass", "Equipped with manual top-mount pressure relief pressure valve buttons", "Reinforced threaded input ports protect against torque piping cracks"] },
+  { name: "Polished Stainless Steel Multi-Element Vessels", category: "Filtration Systems", image: img5, shortDesc: "Commercial grade high-capacity SS304/SS316 housing chambers designed to anchor multiple sediment cartridges or absolute micro-filters concurrently.", specifications: ["Polished sanitary mirror finish with anti-corrosion properties", "Heavy-duty perimeter ring-bolt closures for rapid manual elements replacement", "Equipped with integrated fluid pressure gauges monitoring flow drop metrics", "Ideal for commercial factories, milk bottling hubs, and municipal grids"] },
+  { name: "Precision Panel-Mount Variable Area Flowmeters", category: "Industrial Automation", image: img6, shortDesc: "High-accuracy inline variable flow rotameters engineered by ZYIA to provide clear visual volume readings across discharge lines.", specifications: ["Dual calibrated metering scale panels tracking Gallons and Liters Per Minute", "Precision-machined internal metallic floats avoid fluid sticking limits", "Thick transparent acrylic casing engineered for continuous panel integration", "Essential for assessing precise Reverse Osmosis permeate and reject parameters"] },
+  { name: "Industrial Spiral Brackish Membrane Elements", category: "Filtration Systems", image: img7, shortDesc: "Spiral-wound composite Reverse Osmosis elements (BW-4040) designed to extract 99% of minerals, high fluoride levels, and aquifer salinity.", specifications: ["High active surface canvas optimizes mineral extraction from hard water", "Durable woven outer fiberglass structural shell resists compaction limits", "Delivers crisp potable taste profiles while removing scale-forming ions", "Engineered to fit seamlessly inside standard stainless high-pressure vessels"] },
+  { name: "CNP Vertical Multistage Centrifugal Booster Pumps", category: "Pumping & Boosters", image: img8, shortDesc: "Engineered vertical inline booster pumps crafted in robust stainless materials by leading global brands like CNP and Grundfos.", specifications: ["Delivers high-pressure lift outputs to conquer deep elevation metrics", "All fluid touch components machined in food-safe SS304/SS316 steels", "Continuous continuous-duty Class F insulation high-temp motor rating indexes", "Laser-welded internal impellers guarantee smooth hydraulic output loops"] },
+  { name: "Seko Micro-Processor Controlled Chemical Dosing Pumps", category: "Chemical Treatment", image: img9, shortDesc: "Seko precision electronic liquid dosing pumps designed for accurate chlorine, anti-scalant, and active pH fluid stabilization adjustments.", specifications: ["Fully adjustable stroke rate frequency via digital front-facing dials", "Chemically inert PVDF pump head assemblies with pure PTFE diaphragms", "Wall-mount configurations protected by a robust IP65 ingress chassis", "Ensures precise chemical injection prevents scaling on downstream membranes"] }
 ];
 
 export default function App() {
@@ -47,6 +59,7 @@ export default function App() {
   
   const [formStatus, setFormStatus] = useState({ loading: false, success: false, error: false });
   const formRef = useRef(null);
+  const contactInfoRef = useRef(null);
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -60,6 +73,15 @@ export default function App() {
       setCurrentPage("catalog");
     }
   }, [searchQuery]);
+
+  const scrollToContactDesk = () => {
+    setCurrentPage("home");
+    setTimeout(() => {
+      if (contactInfoRef.current) {
+        contactInfoRef.current.scrollIntoView({ behavior: 'smooth' });
+      }
+    }, 100);
+  };
 
   const handleQuoteRouting = (itemName) => {
     setCurrentPage("home");
@@ -112,7 +134,6 @@ export default function App() {
   return (
     <div className="min-h-screen bg-slate-50/10 text-ink selection:bg-[#38BDF8] selection:text-white">
       
-      {/* --- ADVANCED REGIONAL & MEGA MENU HEADER NAVIGATION --- */}
       <header className="sticky top-0 z-40 bg-white border-b border-[#BFE3FA] shadow-xs" itemscope="itemscope" itemtype="http://www.schema.org/SiteNavigationElement">
         <div className="bg-slate-50 border-b border-slate-200/40 py-1.5 px-6">
           <div className="max-w-7xl mx-auto flex justify-end items-center gap-2.5 text-xs font-mono font-bold text-[#4e7796]">
@@ -168,12 +189,12 @@ export default function App() {
 
           <nav className="hidden lg:flex items-center gap-8 text-sm font-semibold text-ink">
             <div className="relative group/mega py-2">
-              <button onClick={() => setCurrentPage("catalog")} className="hover:text-[#0EA5E9] flex items-center gap-1 transition-colors bg-transparent border-none cursor-pointer">
+              <div className="hover:text-[#0EA5E9] flex items-center gap-1 transition-colors bg-transparent border-none cursor-default select-none">
                 <span>Products & Solutions</span>
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" className="w-3.5 h-3.5 group-hover/mega:rotate-180 transition-transform duration-200" aria-hidden="true">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-3.5 h-3.5 group-hover/mega:rotate-180 transition-transform duration-200" aria-hidden="true">
                   <path d="m6 9 6 6 6-6"></path>
                 </svg>
-              </button>
+              </div>
 
               <div className="absolute top-full -left-48 w-[760px] bg-white border border-slate-200 shadow-2xl rounded-2xl p-6 opacity-0 translate-y-2 pointer-events-none group-hover/mega:opacity-100 group-hover/mega:translate-y-0 group-hover/mega:pointer-events-auto transition-all duration-250 grid grid-cols-3 gap-6">
                 <div className="space-y-3">
@@ -190,24 +211,24 @@ export default function App() {
                   <div className="flex flex-col gap-2 text-xs font-medium text-slate-600">
                     <button onClick={() => { setCurrentPage("catalog"); setSearchQuery("Pump"); }} className="text-left hover:text-ink transition-colors bg-transparent border-none cursor-pointer">Vertical Multistage Pumps</button>
                     <button onClick={() => { setCurrentPage("catalog"); setSearchQuery("Housing"); }} className="text-left hover:text-ink transition-colors bg-transparent border-none cursor-pointer">Filter Cartridge Housings</button>
-                    <button onClick={() => { setCurrentPage("catalog"); setSearchQuery("Dosing"); }} className="text-left hover:text-ink transition-colors bg-transparent border-none cursor-pointer">Clean Dosing Pumps</button>
+                    <button onClick={() => { setCurrentPage("catalog"); setSearchQuery("Cartridge"); }} className="text-left hover:text-ink transition-colors bg-transparent border-none cursor-pointer">Clean Dosing Spares</button>
                   </div>
                 </div>
 
                 <div className="space-y-3">
-                  <h4 className="text-xs font-mono font-bold tracking-wider text-[#0EA5E9] uppercase border-b border-slate-100 pb-1.5 select-none">Vessels & Chemicals</h4>
+                  <h4 className="text-xs font-mono font-bold tracking-wider text-[#0EA5E9] uppercase border-b border-slate-100 pb-1.5 select-none">Vessels & Automation</h4>
                   <div className="flex flex-col gap-2 text-xs font-medium text-slate-600">
                     <button onClick={() => { setCurrentPage("catalog"); setSearchQuery("Vessel"); }} className="text-left hover:text-ink transition-colors bg-transparent border-none cursor-pointer">FRP Media Pressure Tanks</button>
-                    <button onClick={() => { setCurrentPage("catalog"); setSearchQuery("UV"); }} className="text-left hover:text-ink transition-colors bg-transparent border-none cursor-pointer">UV Sterilization Lamps</button>
-                    <button onClick={() => { setCurrentPage("catalog"); setSearchQuery("Chemical"); }} className="text-left hover:text-ink transition-colors bg-transparent border-none cursor-pointer">Treatment Antiscalants</button>
+                    <button onClick={() => { setCurrentPage("catalog"); setSearchQuery("Flowmeter"); }} className="text-left hover:text-ink transition-colors bg-transparent border-none cursor-pointer">Panel Flowmeters</button>
+                    <button onClick={() => { setCurrentPage("catalog"); setSearchQuery("Inverter"); }} className="text-left hover:text-ink transition-colors bg-transparent border-none cursor-pointer">Digital Inverter Panels</button>
                   </div>
                 </div>
               </div>
             </div>
 
-            <button onClick={() => { setCurrentPage("catalog"); window.scrollTo({top: 0, behavior: 'smooth'}); }} className="hover:text-[#0EA5E9] transition-colors bg-transparent border-none font-semibold cursor-pointer">Hardware Catalog</button>
+            <button onClick={() => { setCurrentPage("catalog"); setSearchQuery(""); window.scrollTo({top: 0, behavior: 'smooth'}); }} className="hover:text-[#0EA5E9] transition-colors bg-transparent border-none font-semibold cursor-pointer">Hardware Catalog</button>
             <button onClick={() => { setCurrentPage("home"); setTimeout(() => document.getElementById("partners")?.scrollIntoView({behavior: 'smooth'}), 50); }} className="hover:text-[#0EA5E9] transition-colors bg-transparent border-none font-semibold cursor-pointer">Our Partners</button>
-            <button onClick={() => { setCurrentPage("home"); setTimeout(() => document.getElementById("contact-rfq")?.scrollIntoView({behavior: 'smooth'}), 50); }} className="hover:text-[#0EA5E9] transition-colors bg-transparent border-none font-semibold cursor-pointer">Contact Desk</button>
+            <button onClick={scrollToContactDesk} className="hover:text-[#0EA5E9] transition-colors bg-transparent border-none font-semibold cursor-pointer">Contact Desk</button>
           </nav>
 
           <div className="flex items-center gap-6">
@@ -219,7 +240,7 @@ export default function App() {
               <span className="hidden sm:inline">info@matrixwater.co.ke</span>
             </a>
             <span className="text-[#BFE3FA] hidden sm:block" aria-hidden="true">|</span>
-            <button onClick={() => { setCurrentPage("home"); setTimeout(() => document.getElementById("contact-rfq")?.scrollIntoView({behavior: 'smooth'}), 100); }} className="inline-flex items-center gap-2 bg-[#38BDF8] hover:bg-[#BAE6FD] text-[#0C3D5C] font-semibold text-xs sm:text-sm px-5 py-2.5 rounded-full transition-all tracking-wide shadow-sm font-display cursor-pointer border-none">
+            <button onClick={scrollToContactDesk} className="inline-flex items-center gap-2 bg-[#38BDF8] hover:bg-[#BAE6FD] text-[#0C3D5C] font-semibold text-xs sm:text-sm px-5 py-2.5 rounded-full transition-all tracking-wide shadow-sm font-display cursor-pointer border-none">
               Get Professional Quote
               <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-arrow-right w-4 h-4" aria-hidden="true">
                 <path d="M5 12h14"></path>
@@ -230,10 +251,8 @@ export default function App() {
         </div>
       </header>
 
-      {/* --- PAGE CONDITIONAL ROUTER LAYER --- */}
       {currentPage === "home" ? (
         <>
-          {/* --- HERO SLIDER BANNER --- */}
           <section className="relative w-full min-h-screen overflow-hidden">
             <AnimatePresence mode="wait">
               {HERO_SLIDES.map((slide, idx) => (
@@ -278,12 +297,12 @@ export default function App() {
                   </AnimatePresence>
                   
                   <div className="flex flex-wrap gap-4 w-full sm:w-auto">
-                    <button onClick={() => { setCurrentPage("catalog"); window.scrollTo({top: 0}); }} className="bg-[#38BDF8] hover:bg-[#0EA5E9] text-ink font-bold text-sm px-6 py-3 rounded-full transition-all shadow-md text-center flex-1 sm:flex-none border-none cursor-pointer">
+                    <button onClick={() => { setCurrentPage("catalog"); setSearchQuery(""); window.scrollTo({top: 0}); }} className="bg-[#38BDF8] hover:bg-[#0EA5E9] text-ink font-bold text-sm px-6 py-3 rounded-full transition-all shadow-md text-center flex-1 sm:flex-none border-none cursor-pointer">
                       Hardware Catalog
                     </button>
-                    <a href="#contact-rfq" className="border border-white/40 hover:border-[#38BDF8] hover:bg-white/10 text-white font-bold text-sm px-6 py-3 rounded-full transition-colors text-center flex-1 sm:flex-none">
+                    <button onClick={scrollToContactDesk} className="border border-white/40 hover:border-[#38BDF8] hover:bg-white/10 text-white font-bold text-sm px-6 py-3 rounded-full transition-colors text-center flex-1 sm:flex-none bg-transparent cursor-pointer">
                       Send Inquiry
-                    </a>
+                    </button>
                   </div>
                 </div>
               </div>
@@ -304,8 +323,10 @@ export default function App() {
             </div>
           </section>
 
-          {/* --- TURNKEY ENGINEERED SYSTEMS GRID SECTION WITH EXPANDABLE HOVER INTERACTION --- */}
-          <section className="py-24 bg-white relative overflow-hidden" id="engineered-systems">
+          {/* TURNKEY ENGINEERED SYSTEMS SECTION */}
+          <section className="py-24 bg-white relative overflow-hidden" id="engineered-systems"
+            style={{ backgroundImage: `url(${backgrnd})`, backgroundRepeat: 'no-repeat', backgroundSize: '500px', backgroundPosition: 'right 10% top 12%' }}
+          > 
             <div className="max-w-7xl mx-auto px-6 relative z-10">
               <div className="max-w-2xl text-left mb-16 pt-4">
                 <span className="font-mono text-xs font-black text-[#0EA5E9] tracking-[0.25em] uppercase block mb-3.5">
@@ -376,18 +397,16 @@ export default function App() {
           </section>
         </>
       ) : (
-        /* --- DEDICATED HARDWARE COMPONENT CATALOG PAGE --- */
+        /* DEDICATED HARDWARE COMPONENT CATALOG PAGE WITH YOUR CUSTOM WEBIMG.PNG AS BACKGROUND INTERFACE */
         <motion.main 
           initial={{ opacity: 0, y: 10 }} 
           animate={{ opacity: 1, y: 0 }} 
           exit={{ opacity: 0 }}
-          className="py-16 bg-[#F0F9FF] border-t border-[#D0E7F8] relative min-h-[75vh]"
+          className="py-16 bg-cover bg-center bg-no-repeat relative min-h-[75vh]"
+          style={{ backgroundImage: `url(${webimg})` }} // Assigned the requested local background asset cleanly here
         >
-          <div 
-            className="absolute inset-0 pointer-events-none bg-cover bg-center mix-blend-multiply select-none opacity-[0.04]" 
-            style={{ backgroundImage: "url('https://images.unsplash.com/photo-1548802673-380ab8ebc7b7?q=80&w=1600&auto=format&fit=crop')" }} 
-            aria-hidden="true"
-          />
+          {/* Subtle multi-pass gradient mask over the webimg layout asset guarantees perfect contrast fields */}
+          <div className="absolute inset-0 bg-gradient-to-b from-[#F0F9FF]/90 via-[#F0F9FF]/85 to-[#F0F9FF]/95 z-0 pointer-events-none" />
 
           <div className="max-w-7xl mx-auto px-6 relative z-10">
             <div className="mb-8 flex flex-wrap items-center justify-between gap-4">
@@ -430,8 +449,8 @@ export default function App() {
                     className="group border border-slate-200/60 rounded-3xl bg-white p-5 hover:border-[#38BDF8]/40 transition-all duration-350 flex flex-col justify-between cursor-pointer"
                   >
                     <div>
-                      <div className="w-full h-48 bg-slate-50 border border-slate-100 rounded-xl flex items-center justify-center overflow-hidden mb-4.5">
-                        <img src={item.image} alt={item.name} className="w-full h-full object-cover group-hover:scale-102 transition-transform duration-500" />
+                      <div className="w-full h-52 bg-slate-50 border border-slate-100 rounded-xl flex items-center justify-center overflow-hidden mb-4.5 p-2 bg-radial from-white to-slate-50/30">
+                        <img src={item.image} alt={item.name} className="max-h-full max-w-full object-contain group-hover:scale-105 transition-transform duration-500" />
                       </div>
                       <span className="font-mono text-[10px] uppercase font-bold tracking-widest text-[#0EA5E9] bg-[#F0F9FF] border border-[#BFE3FA] px-2 py-0.5 rounded-md mb-2 inline-block">
                         {item.category}
@@ -467,7 +486,7 @@ export default function App() {
         </motion.main>
       )}
 
-      {/* --- FORM REQUEST FOR QUOTE DESK WITH CUSTOM BLUE GRAPHIC BACKDROP --- */}
+      {/* FORM REQUEST FOR QUOTE DESK WITH CUSTOM BLUE GRAPHIC BACKDROP */}
       <section 
         className="py-20 bg-cover bg-center text-ink border-t border-[#BFE3FA]/30 relative" 
         id="contact-rfq" 
@@ -541,7 +560,7 @@ export default function App() {
         </div>
       </section>
 
-      {/* --- INDUSTRY PARTNERS & BRANDS CAROUSEL --- */}
+      {/* INDUSTRY PARTNERS & BRANDS CAROUSEL */}
       <section className="py-16 bg-slate-50/70 border-y border-slate-200/50 overflow-hidden select-none" id="partners">
         <div className="max-w-7xl mx-auto px-6">
           <div className="text-center mb-10">
@@ -603,6 +622,7 @@ export default function App() {
 
       {/* --- FOOTER SPEC LAYERS PRESERVING THE COVER WATER BACKGROUND --- */}
       <footer 
+        ref={contactInfoRef}
         className="text-white py-14 border-t border-[#38BDF8]/30 relative overflow-hidden bg-cover bg-center shadow-md"
         style={{ backgroundImage: "url('https://images.unsplash.com/photo-1551244072-5d12893278ab?q=80&w=1600&auto=format&fit=crop')" }}
       >
@@ -638,7 +658,6 @@ export default function App() {
         </div>
       </footer>
 
-      {/* --- SPECIFICATION DETAILS LOOKUP MODAL --- */}
       <AnimatePresence>
         {selectedProduct && (
           <div className="fixed inset-0 bg-black/75 backdrop-blur-sm z-50 flex items-center justify-center p-4" onClick={() => setSelectedProduct(null)}>
