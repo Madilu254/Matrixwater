@@ -2,10 +2,11 @@ import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ArrowRight, ChevronLeft, ChevronRight, CheckCircle, Clock, Mail, MapPin, Phone, X, ArrowLeft } from 'lucide-react';
 
-// Core UI Background Assets
+// Core UI Background & Branding Assets
+import logoImg from './Matrix Logo.png'; // Imported your official logo asset here
 import blueBg from './Blue.jpg';
 import backgrnd from './backgrnd.png';
-import webimg from './webimg.png'; // Imported the requested blue tint background layout image
+import webimg from './webimg.png';
 
 // Explicit Local Workshop Inventory Image Asset Injections
 import img1 from './assets/img1.jpeg';
@@ -173,18 +174,9 @@ export default function App() {
         </div>
 
         <div className="max-w-7xl mx-auto w-full px-6 py-4 flex items-center justify-between">
-          <button onClick={() => { setCurrentPage("home"); window.scrollTo({top: 0, behavior: 'smooth'}); }} className="flex items-center gap-2.5 group cursor-pointer text-left focus:outline-none bg-transparent border-none">
-            <div className="relative flex items-center justify-center shrink-0 w-11 h-11 select-none">
-              <svg width="44" height="44" viewBox="0 0 100 100" className="w-11 h-11 select-none">
-                <ellipse cx="50" cy="74" rx="32" ry="10" fill="none" stroke="#38BDF8" strokeWidth="3.5" opacity="0.85"></ellipse>
-                <ellipse cx="50" cy="79" rx="20" ry="6.5" fill="none" stroke="#38BDF8" strokeWidth="2.5" opacity="0.6"></ellipse>
-                <path d="M50 16 C32 46 32 68 50 68 C68 68 68 46 50 16 Z" fill="#0C3D5C"></path>
-              </svg>
-            </div>
-            <div className="flex flex-col select-none leading-none">
-              <span className="font-display font-black text-xl tracking-tight text-[#0C3D5C]">Matrix</span>
-              <span className="font-display font-bold text-xs tracking-wide text-[#38BDF8] mt-0.5">Water Ltd</span>
-            </div>
+          {/* Swapped custom vector nodes with your cleanly imported branding asset token */}
+          <button onClick={() => { setCurrentPage("home"); window.scrollTo({top: 0, behavior: 'smooth'}); }} className="flex items-center gap-2 group cursor-pointer text-left focus:outline-none bg-transparent border-none">
+            <img src={logoImg} alt="Matrix Water Ltd Logo" className="h-11 w-auto object-contain select-none" />
           </button>
 
           <nav className="hidden lg:flex items-center gap-8 text-sm font-semibold text-ink">
@@ -366,7 +358,7 @@ export default function App() {
 
                       <div className="grid grid-rows-[0fr] group-hover:grid-rows-[1fr] opacity-0 group-hover:opacity-100 transition-all duration-350 ease-in-out">
                         <div className="overflow-hidden">
-                          <p className="text-[#475569] text-xs sm:text-sm mt-3 leading-relaxed pt-3 border-t border-slate-100">
+                          <p className="text-[#475569] text-xs sm:text-sm mt-3 dwelling-relaxed pt-3 border-t border-slate-100">
                             {item.shortDesc}
                           </p>
                           
@@ -403,9 +395,8 @@ export default function App() {
           animate={{ opacity: 1, y: 0 }} 
           exit={{ opacity: 0 }}
           className="py-16 bg-cover bg-center bg-no-repeat relative min-h-[75vh]"
-          style={{ backgroundImage: `url(${webimg})` }} // Assigned the requested local background asset cleanly here
+          style={{ backgroundImage: `url(${webimg})` }}
         >
-          {/* Subtle multi-pass gradient mask over the webimg layout asset guarantees perfect contrast fields */}
           <div className="absolute inset-0 bg-gradient-to-b from-[#F0F9FF]/90 via-[#F0F9FF]/85 to-[#F0F9FF]/95 z-0 pointer-events-none" />
 
           <div className="max-w-7xl mx-auto px-6 relative z-10">
@@ -560,7 +551,6 @@ export default function App() {
         </div>
       </section>
 
-      {/* INDUSTRY PARTNERS & BRANDS CAROUSEL */}
       <section className="py-16 bg-slate-50/70 border-y border-slate-200/50 overflow-hidden select-none" id="partners">
         <div className="max-w-7xl mx-auto px-6">
           <div className="text-center mb-10">
@@ -620,7 +610,7 @@ export default function App() {
         </div>
       </section>
 
-      {/*FOOTER SPEC LAYERS PRESERVING THE COVER WATER BACKGROUND*/}
+      {/* --- FOOTER SPEC LAYERS PRESERVING THE COVER WATER BACKGROUND --- */}
       <footer 
         ref={contactInfoRef}
         className="text-white py-14 border-t border-[#38BDF8]/30 relative overflow-hidden bg-cover bg-center shadow-md"
@@ -669,6 +659,7 @@ export default function App() {
               className="bg-white text-ink max-w-lg w-full rounded-2xl overflow-hidden shadow-2xl border border-slate-200 flex flex-col"
             >
               <div className="relative h-56 bg-slate-50 border-b border-slate-100 p-6 flex items-center justify-center">
+                <img src={selectedProduct.image} alt={selectedProduct.name} className="max-h-full max-w-full object-contain mix-blend-multiply" />
                 <img src={selectedProduct.image} alt={selectedProduct.name} className="max-h-full max-w-full object-contain mix-blend-multiply" />
                 <button onClick={() => setSelectedProduct(null)} className="absolute top-4 right-4 bg-black/60 hover:bg-black/90 text-white rounded-full p-1.5 cursor-pointer transition-colors border-none">
                   <X className="w-4 h-4" />
